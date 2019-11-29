@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1>Demo</h1>
+
+
+    <script src="/autobahn.js" charset="utf-8"></script>
+    <script type="text/javascript">
+
+    var connection = new autobahn.Connection({url: 'wss://ws.syrow.com:443/ws', realm: 'default'});
+
+    onevent = function() {
+      console.log("Hello Prateek");
+
+    }
+
+    connection.onopen = function (session) {
+      console.log("Connection done");
+      session.subscribe('prateek.chat.box', onevent);
+    };
+
+    connection.open();
+
+    connection.onclose = function(reason, details) {
+      console.log("Disconnected");
+    }
+
+    </script>
+  </body>
+</html>

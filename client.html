@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <h1>Client</h1>
+  <form class="pure-form">
+    <input id="name" type="text" placeholder="Enter Name" />
+    <button type="submit">Send</button>
+  </form>
+
+  <div>
+
+  </div>
+
+
+  <script src="/autobahn.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var connection = new autobahn.Connection({ url: 'wss://ws.syrow.com:443/ws', realm: 'default' });
+
+
+
+
+    onevent = function (args) {
+      console.log(args);
+    }
+
+    sumitup = function (args) {
+      return args[0] + args[1]
+    }
+
+    heartbeat = function (args) {
+      return `Barcelona had ${args[0]}% possesion & Real Had ${args[1]}% possesion in Classico`
+    }
+
+    connection.onopen = function (session) {
+      console.log("Connection done");
+      session.subscribe('com.myapp.add2', onevent);
+      session.subscribe('prateek.chat.box', onevent);
+      session.subscribe('com.myapp.heartbeat', heartbeat);
+      session.register('com.myapp.add2', sumitup);
+      session.register('com.myapp.heartbeat', heartbeat);
+    };
+
+    connection.open();
+
+    connection.onclose = function (reason, details) {
+      console.log("Disconnected");
+    }
+
+  </script>
+</body>
+
+</html>
